@@ -276,9 +276,9 @@ class PremiumDict(dict):
 if __name__ == '__main__':
 
     def test_for_formats(format: str):
-        print("_________________________________")
+        print("____________________________________")
         print(f"--- Running example for '{format.upper()}' ---")
-        print("---------------------------------")
+        print("------------------------------------")
 
         filename = 'user_data.' + format
         premium_dict = PremiumDict(filename)
