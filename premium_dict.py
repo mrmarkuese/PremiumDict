@@ -12,7 +12,7 @@ import string
 import logging.handlers
 
 # TODO: Since Iterable has moved from collections to collections.abc, there is a deprecation warning in
-#       dicttoxml in Python 3.9 that is used in func __store_as_xml__(), this may be fixed soon
+#       dicttoxml in Python 3.9 that is used in func _store_as_xml(), this may be fixed soon
 # https://github.com/quandyfactory/dicttoxml/pull/73/commits/2b7b4522b7255fbc8f1e04304d2e440d333909d5
 
 # Rotating logger setup
@@ -104,7 +104,7 @@ class PremiumDict(dict):
         return file_path
 
     def __setitem__(self, item, value):
-        assert isinstance(self, PremiumDict), logger.exception(f"Wrong object type - not an instance of PremiumDict")
+        assert isinstance(self, PremiumDict), logger.exception("Wrong object type - not an instance of PremiumDict")
         logger.debug(f"sentinal: {self.sentinal}.")
         self.sentinal.append(item)
         logger.debug(f"sentinal appended item: '{item}' and is now: {self.sentinal}.")
@@ -145,20 +145,20 @@ class PremiumDict(dict):
         data_dict = {}
         with Switch(self.format.name) as case:
             if case('YAML'):
-                data_dict = self.__load_yaml__()
+                data_dict = self._load_yaml()
             if case('JSON'):
-                data_dict = self.__load_json__()
+                data_dict = self._load_json()
             if case('PICKLE'):
-                data_dict = self.__load_pickle__()
+                data_dict = self._load_pickle()
             if case('XML'):
-                data_dict = self.__load_xml__()
+                data_dict = self._load_xml()
             if case('CSV'):
-                data_dict = self.__load_csv__()
+                data_dict = self._load_csv()
             if case.default:
                 logger.error(f"Error, unknown file format: {self.format.name}.")
         return data_dict
 
-    def __load_yaml__(self):
+    def _load_yaml(self):
         data_dict = {}
         if os.path.exists(self.path):
             with open(self.path, 'r', newline='') as f:
@@ -170,16 +170,16 @@ class PremiumDict(dict):
             logger.info(f"File '{self.path}' not exists. Return empty dict().")
         return data_dict
 
-    def __load_json__(self):
+    def _load_json(self):
         data_dict = {}
         if os.path.exists(self.path):
             with open(self.path, 'r') as f:
                 data_dict = json.load(f)
         else:
-            logger.info("File '{}' not exists. Return empty dict().".format(self.path))
+            logger.info(f"File '{self.path}' not exists. Return empty dict().")
         return data_dict
 
-    def __load_pickle__(self):
+    def _load_pickle(self):
         data_dict = {}
         if os.path.exists(self.path):
             try:
@@ -188,20 +188,20 @@ class PremiumDict(dict):
             except pickle.UnpicklingError as pickle_excp:
                 logger.exception(pickle_excp)
         else:
-            logger.info("File '{}' not exists. Return empty dict().".format(self.path))
+            logger.info(f"File '{self.path}' not exists. Return empty dict().")
         return data_dict
 
-    def __load_xml__(self):
+    def _load_xml(self):
         data_dict = {}
         if os.path.exists(self.path):
             with open(self.path, 'r') as f:
                 root = xmltodict.parse(f.read(), dict_constructor=dict)
                 data_dict = root['root']
         else:
-            logger.info("File '{}' not exists. Return empty dict().".format(self.path))
+            logger.info(f"File '{self.path}' not exists. Return empty dict().")
         return data_dict
 
-    def __load_csv__(self):
+    def _load_csv(self):
         data_dict = {}
         if os.path.exists(self.path):
             try:
@@ -211,41 +211,40 @@ class PremiumDict(dict):
             except csv.Error as e:
                 logger.exception(e)
         else:
-            logger.info("File '{}' not exists. Return empty dict().".format(self.path))
+            logger.info(f"File '{self.path}' not exists. Return empty dict().")
         return data_dict
 
     def store(self):
         with Switch(self.format.name) as case:
             if case('YAML'):
-                self.__store_as_yaml__()
+                self._store_as_yaml()
             if case('JSON'):
-                self.__store_as_json__()
+                self._store_as_json()
             if case('PICKLE'):
-                self.__store_as_pickle__()
+                self._store_as_pickle()
             if case('XML'):
-                self.__store_as_xml__()
+                self._store_as_xml()
             if case('CSV'):
-                self.__store_as_csv__()
+                self._store_as_csv()
             if case.default:
-                logger.error("Error, unknown file format: {}.".format(self.format.name))
-        logger.debug(
-            "Stored {} in {} format at {}".format(dict(zip(self.keys(), self.values())), self.format.name, self.path))
+                logger.info(f"File '{self.path}' not exists. Return empty dict().")
+        logger.debug(f"Stored {dict(zip(self.keys(), self.values()))} in {self.format.name} format at {self.path}")
 
-    def __store_as_yaml__(self):
+    def _store_as_yaml(self):
         try:
             with open(self.path, 'w') as f:
                 yaml.dump(dict(zip(self.keys(), self.values())), f)
         except Exception as e:
-            logger.exception('Error writing the {} file: {}'.format(self.format.name, e))
+            logger.exception(f"Error writing the {self.format.name} file: {e}")
 
-    def __store_as_json__(self):
+    def _store_as_json(self):
         try:
             with open(self.path, 'w') as f:
                 json.dump(dict(zip(self.keys(), self.values())), f, sort_keys=True)
         except Exception as e:
-            logger.exception('Error writing the {} file: {}'.format(self.format.name, e))
+            logger.exception(f"Error writing the {self.format.name} file: {e}")
 
-    def __store_as_pickle__(self):
+    def _store_as_pickle(self):
         try:
             with open(self.path, 'wb') as f:
                 try:
@@ -253,25 +252,24 @@ class PremiumDict(dict):
                 except pickle.PicklingError as pickle_excp:
                     logger.exception(pickle_excp)
         except Exception as e:
-            logger.exception('Error writing the {} file: {}'.format(self.format.name, e))
+            logger.exception(f"Error writing the {self.format.name} file: {e}")
 
-    def __store_as_xml__(self):
+    def _store_as_xml(self):
         try:
             xml = dicttoxml(dict(zip(self.keys(), self.values())), attr_type=False)
             with open(self.path, 'w+') as f:
                 f.write(xml.decode('utf-8'))
         except Exception as e:
-            logger.exception('Error writing the {} file: {}'.format(self.format.name, e))
+            logger.exception(f"Error writing the {self.format.name} file: {e}")
 
-    def __store_as_csv__(self):
+    def _store_as_csv(self):
         try:
             with open(self.path, 'w') as f:
                 writer = csv.writer(f)
                 for key, value in zip(self.keys(), self.values()):
-                    # logger.debug(f"Storing key: {key}, value: {value}")
                     writer.writerow([key, value])
         except Exception as e:
-            logger.exception('Error writing the {} file: {}'.format(self.format.name, e))
+            logger.exception(f"Error writing the {self.format.name} file: {e}")
 
 
 # Try this for several formats
@@ -295,7 +293,7 @@ if __name__ == '__main__':
 
         # Get the entry
         user_lists = premium_dict['Users']
-        print('Users: {}'.format(dict(zip(user_lists.keys(), user_lists.values()))))
+        print(f"Users: {dict(zip(user_lists.keys(), user_lists.values()))}")
 
         print(premium_dict.items())
         print(premium_dict.item_changed())
