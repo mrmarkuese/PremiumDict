@@ -85,7 +85,7 @@ class PremiumDict(dict):
             # Set file path for storing dict
             if path == None:
                 # Get path from working dir
-                self.path = self._get_filepath()
+                self.path = self.get_filepath()
             else:
                 # Or take path from parameter
                 self.path = path
@@ -98,7 +98,7 @@ class PremiumDict(dict):
             # Initialize PremiumDict instance with previous saved data (if they exist)
             self.update(tuple_list)
 
-    def _get_filepath(self):
+    def get_filepath(self):
         dir_path = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(dir_path, self.name + '.' + self.format.name.lower())
         return file_path
