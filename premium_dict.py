@@ -277,7 +277,7 @@ if __name__ == '__main__':
 
     def test_for_formats(format: str):
         print("_________________________________")
-        print(f"--- Running test for '{format.upper()}' ---")
+        print(f"--- Running example for '{format.upper()}' ---")
         print("---------------------------------")
 
         filename = 'user_data.' + format
