@@ -1,1 +1,8 @@
 .DS_Store
+*.log.*
+*.yaml
+*.pickle
+*.xml
+*.json
+*.csv
+
