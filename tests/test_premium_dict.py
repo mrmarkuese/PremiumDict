@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from CodeSnippets.premium_dict import PremiumDict
+import sys
+sys.path.insert(0, '../')
+from PremiumDict.premium_dict import PremiumDict
 
 
 class TestPremiumDictMethods(unittest.TestCase):

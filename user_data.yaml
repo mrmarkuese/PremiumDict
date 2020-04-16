@@ -1,0 +1,11 @@
+Users:
+  black_list:
+    nonmember_01: 123
+    nonmember_02: 234
+  white_list:
+    member_01:
+      multiple_IDs:
+      - 11
+      - 12
+      - 13
+    member_02: 222

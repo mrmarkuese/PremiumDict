@@ -1,0 +1,43 @@
+2020-04-16 18:36:32,818 INFO File '/Users/mr.markuese/Documents/MakeThings/Software/myGithub/PremiumDict/test_dict.xml' not exists. Return empty dict().
+2020-04-16 18:36:32,819 DEBUG Init with <zip object at 0x10ecef7d0>.
+2020-04-16 18:36:32,819 DEBUG Updating with '<zip object at 0x10ecef7d0>'.
+2020-04-16 18:36:32,819 DEBUG Sentinal: [].
+2020-04-16 18:36:32,819 DEBUG Sentinal extended: [].
+2020-04-16 18:36:32,819 DEBUG sentinal: [].
+2020-04-16 18:36:32,819 DEBUG sentinal appended item: 'test' and is now: ['test'].
+2020-04-16 18:36:32,819 DEBUG Changing value of key 'test' to 'True'!!
+2020-04-16 18:36:32,819 DEBUG Saving changes to /Users/mr.markuese/Documents/MakeThings/Software/myGithub/PremiumDict/test_dict.xml.
+2020-04-16 18:36:32,819 INFO Inside dicttoxml(): type(obj) is: "dict", obj="{'test': 'True'}"
+2020-04-16 18:36:32,819 INFO Inside convert(). obj type is: "dict", obj="{'test': 'True'}"
+2020-04-16 18:36:32,820 INFO Inside convert_dict(): obj type is: "dict", obj="{'test': 'True'}"
+2020-04-16 18:36:32,820 INFO Looping inside convert_dict(): key="test", val="True", type(val)="str"
+2020-04-16 18:36:32,820 INFO Inside make_valid_xml_name(). Testing key "test" with attr "{}"
+2020-04-16 18:36:32,820 INFO Inside key_is_valid_xml(). Testing "test"
+2020-04-16 18:36:32,821 INFO Inside convert_kv(): key="test", val="True", type(val) is: "str"
+2020-04-16 18:36:32,821 INFO Inside make_valid_xml_name(). Testing key "test" with attr "{}"
+2020-04-16 18:36:32,821 INFO Inside key_is_valid_xml(). Testing "test"
+2020-04-16 18:36:32,822 DEBUG Stored {'test': 'True'} in XML format at /Users/mr.markuese/Documents/MakeThings/Software/myGithub/PremiumDict/test_dict.xml
+2020-04-16 18:36:32,822 DEBUG File path: /Users/mr.markuese/Documents/MakeThings/Software/myGithub/PremiumDict/test_dict.xml.
+2020-04-16 18:36:32,823 DEBUG Init with <zip object at 0x10ed19eb0>.
+2020-04-16 18:36:32,823 DEBUG Updating with '<zip object at 0x10ed19eb0>'.
+2020-04-16 18:36:32,823 DEBUG Sentinal: [].
+2020-04-16 18:36:32,823 DEBUG Sentinal extended: [].
+2020-04-16 18:36:32,823 DEBUG File path: /Users/mr.markuese/Documents/MakeThings/Software/myGithub/PremiumDict/test_dict.yaml.
+2020-04-16 18:36:32,823 INFO File '/Users/mr.markuese/Documents/MakeThings/Software/myGithub/PremiumDict/test_dict.yaml' not exists. Return empty dict().
+2020-04-16 18:36:32,823 DEBUG Init with <zip object at 0x10ed19e60>.
+2020-04-16 18:36:32,823 DEBUG Updating with '<zip object at 0x10ed19e60>'.
+2020-04-16 18:36:32,823 DEBUG Sentinal: [].
+2020-04-16 18:36:32,824 DEBUG Sentinal extended: [].
+2020-04-16 18:36:32,824 DEBUG sentinal: [].
+2020-04-16 18:36:32,824 DEBUG sentinal appended item: 'test' and is now: ['test'].
+2020-04-16 18:36:32,824 DEBUG Changing value of key 'test' to 'True'!!
+2020-04-16 18:36:32,824 DEBUG Saving changes to /Users/mr.markuese/Documents/MakeThings/Software/myGithub/PremiumDict/test_dict.yaml.
+2020-04-16 18:36:32,825 DEBUG Stored {'test': True} in YAML format at /Users/mr.markuese/Documents/MakeThings/Software/myGithub/PremiumDict/test_dict.yaml
+2020-04-16 18:36:32,825 DEBUG File path: /Users/mr.markuese/Documents/MakeThings/Software/myGithub/PremiumDict/test_dict.yaml.
+2020-04-16 18:36:32,825 DEBUG Init with <zip object at 0x10ecf1fa0>.
+2020-04-16 18:36:32,826 DEBUG Updating with '<zip object at 0x10ecf1fa0>'.
+2020-04-16 18:36:32,826 DEBUG Sentinal: [].
+2020-04-16 18:36:32,826 DEBUG Sentinal extended: [].
+2020-04-16 18:36:32,826 DEBUG Updating with '[('test', True)]'.
+2020-04-16 18:36:32,826 DEBUG Sentinal: [].
+2020-04-16 18:36:32,826 DEBUG Sentinal extended: ['test'].
