@@ -22,8 +22,8 @@ log_level = logging.DEBUG
 logger = logging.getLogger('premium_dict')
 log_filename = 'premium.log'
 # Let the log files rotate
-max_keep_files = 2
-max_file_size = 10000
+max_keep_files = 2              # Change here the number of rotation files
+max_file_size = 10000           # Change here the max log file size (bytes)
 file_handler = logging.handlers.RotatingFileHandler(log_filename,
                                                     mode='a',
                                                     maxBytes=max_file_size,
@@ -38,6 +38,7 @@ root_logger.setLevel(log_level)
 
 class Format(Enum):
     ''' A class derived from Enum that contains the file formats for serialization in PremiumDict '''
+
     YAML = 0
     JSON = 1
     PICKLE = 2
@@ -47,17 +48,19 @@ class Format(Enum):
 
 class PremiumDict(dict):
     ''' A class derived from dict that contains additional features, e. g. Serializing '''
+
     def __init__(self, filename=None, path=None):
         super(PremiumDict, self).__init__
         self.sentinal = list()
 
+        # To initialize a dict with serialization ability a file name is needed
         if filename is not None:
             input = filename.split('.')
             assert len(input) == 2, f"Only one '.' allowed to separate filename and format: {input}"
             (name, format) = input
             # First check whether the file name has been selected correctly
-            assert isinstance(name, str), f"filename has to be a string"
-            assert isinstance(format, str), f"format has to be a string"
+            assert isinstance(name, str), "filename has to be a string"
+            assert isinstance(format, str), "format has to be a string"
             allowed = string.ascii_letters + string.digits + '_' + '-'
             not_allowed = set(name) - set(allowed)
             assert len(not_allowed) == 0, f"Error filename: characters {not_allowed} are not allowed"
@@ -117,7 +120,6 @@ class PremiumDict(dict):
         logger.debug(f"sentinal removed item: '{item}' and is now: {self.sentinal}.")
         value = super(PremiumDict, self).__getitem__(item)
         logger.debug(f"Reading data: '{value}' for key: '{item}'.")
-
         return value
 
     # Takes a list of tuples, like [('some', 'thing')]
@@ -152,7 +154,6 @@ class PremiumDict(dict):
                 data_dict = self.__load_csv__()
             if case.default:
                 logger.error(f"Error, unknown file format: {self.format.name}.")
-
         return data_dict
 
     def __load_yaml__(self):
@@ -165,7 +166,6 @@ class PremiumDict(dict):
                     logger.exception(yaml_excp)
         else:
             logger.info(f"File '{self.path}' not exists. Return empty dict().")
-
         return data_dict
 
     def __load_json__(self):
@@ -175,7 +175,6 @@ class PremiumDict(dict):
                 data_dict = json.load(f)
         else:
             logger.info("File '{}' not exists. Return empty dict().".format(self.path))
-
         return data_dict
 
     def __load_pickle__(self):
@@ -188,7 +187,6 @@ class PremiumDict(dict):
                 logger.exception(pickle_excp)
         else:
             logger.info("File '{}' not exists. Return empty dict().".format(self.path))
-
         return data_dict
 
     def __load_xml__(self):
