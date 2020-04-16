@@ -22,8 +22,8 @@ log_level = logging.DEBUG
 logger = logging.getLogger('premium_dict')
 log_filename = 'premium.log'
 # Let the log files rotate
-max_keep_files = 2              # Change here the number of rotation files
-max_file_size = 10000           # Change here the max log file size (bytes)
+max_keep_files = 2  # Change here the number of rotation files
+max_file_size = 10000  # Change here the max log file size (bytes)
 file_handler = logging.handlers.RotatingFileHandler(log_filename,
                                                     mode='a',
                                                     maxBytes=max_file_size,
@@ -35,6 +35,7 @@ file_handler.setFormatter(fmt)
 root_logger = logging.getLogger()
 root_logger.addHandler(file_handler)
 root_logger.setLevel(log_level)
+
 
 class Format(Enum):
     ''' A class derived from Enum that contains the file formats for serialization in PremiumDict '''
@@ -64,7 +65,8 @@ class PremiumDict(dict):
             allowed = string.ascii_letters + string.digits + '_' + '-'
             not_allowed = set(name) - set(allowed)
             assert len(not_allowed) == 0, f"Error filename: characters {not_allowed} are not allowed"
-            assert name[:1].isalpha() is True, f"Error filename: first character has to be a letter, but is '{name[:1]}'"
+            assert name[
+                   :1].isalpha() is True, f"Error filename: first character has to be a letter, but is '{name[:1]}'"
             self.name = name
 
             if format == "yaml":
@@ -226,7 +228,8 @@ class PremiumDict(dict):
                 self.__store_as_csv__()
             if case.default:
                 logger.error("Error, unknown file format: {}.".format(self.format.name))
-        logger.debug("Stored {} in {} format at {}".format(dict(zip(self.keys(), self.values())), self.format.name, self.path))
+        logger.debug(
+            "Stored {} in {} format at {}".format(dict(zip(self.keys(), self.values())), self.format.name, self.path))
 
     def __store_as_yaml__(self):
         try:
@@ -265,7 +268,7 @@ class PremiumDict(dict):
             with open(self.path, 'w') as f:
                 writer = csv.writer(f)
                 for key, value in zip(self.keys(), self.values()):
-                    #logger.debug(f"Storing key: {key}, value: {value}")
+                    # logger.debug(f"Storing key: {key}, value: {value}")
                     writer.writerow([key, value])
         except Exception as e:
             logger.exception('Error writing the {} file: {}'.format(self.format.name, e))
@@ -285,7 +288,8 @@ if __name__ == '__main__':
 
         # Nested example structure
         premium_dict['Users'] = {'white_list': {'member_01': {'multiple_IDs': [11, 12, 13]}, 'member_02': 222},
-                                 'black_list': {'nonmember_01': 123, 'nonmember_02': 234}}
+                                 'black_list': {'nonmember_01': 123, 'nonmember_02': 234}
+                                 }
         # Check if there is a new entry
         print(premium_dict.item_changed())
 
@@ -300,13 +304,3 @@ if __name__ == '__main__':
     # Run tests for every entry in Format
     for format in Format.__members__.keys():
         test_for_formats(format.lower())
-
-
-
-
-
-
-
-
-
-
