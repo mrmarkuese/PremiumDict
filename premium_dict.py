@@ -279,7 +279,7 @@ class PremiumDict(dict):
 if __name__ == '__main__':
 
     def test_for_formats(format: str):
-        print("____________________________________")
+        print("------------------------------------")
         print(f"--- Running example for '{format.upper()}' ---")
         print("------------------------------------")
 
