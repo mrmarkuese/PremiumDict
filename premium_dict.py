@@ -111,7 +111,7 @@ class PremiumDict(dict):
         logger.debug(f"Changing value of key '{item}' to '{value}'!!")
         # Set data
         super(PremiumDict, self).__setitem__(item, value)
-        print(f"self.sentinel: {self.sentinel}")
+        print(f"__setitem__ self.sentinel: {self.sentinel}")
         # Callback store data
         if hasattr(self, 'name') and hasattr(self, 'path'):
             logger.debug(f"Saving changes to {self.path}.")
@@ -123,7 +123,7 @@ class PremiumDict(dict):
         logger.debug(f"sentinel removed item: '{item}' and is now: {self.sentinel}.")
         value = super(PremiumDict, self).__getitem__(item)
         logger.debug(f"Reading data: '{value}' for key: '{item}'.")
-        print(f"self.sentinel: {self.sentinel}")
+        print(f"__getitem__ self.sentinel: {self.sentinel}")
         return value
 
     # Takes a list of tuples, like [('some', 'thing')]
@@ -133,7 +133,7 @@ class PremiumDict(dict):
         logger.debug(f"sentinel: {self.sentinel}.")
         self.sentinel.extend(k for k, v in iterable)
         logger.debug(f"sentinel extended: {self.sentinel}.")
-        print(f"self.sentinel: {self.sentinel}")
+        print(f"update self.sentinel: {self.sentinel}")
 
     def items(self):
         self.sentinel = list()
