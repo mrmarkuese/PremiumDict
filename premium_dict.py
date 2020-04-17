@@ -52,7 +52,7 @@ class PremiumDict(dict):
 
     def __init__(self, filename=None, path=None):
         super(PremiumDict, self).__init__
-        self.sentinal = list()
+        self.sentinel = list()
 
         # To initialize a dict with serialization ability a file name is needed
         if filename is not None:
@@ -105,41 +105,44 @@ class PremiumDict(dict):
 
     def __setitem__(self, item, value):
         assert isinstance(self, PremiumDict), logger.exception("Wrong object type - not an instance of PremiumDict")
-        logger.debug(f"sentinal: {self.sentinal}.")
-        self.sentinal.append(item)
-        logger.debug(f"sentinal appended item: '{item}' and is now: {self.sentinal}.")
+        logger.debug(f"sentinel: {self.sentinel}.")
+        self.sentinel.append(item)
+        logger.debug(f"sentinel appended item: '{item}' and is now: {self.sentinel}.")
         logger.debug(f"Changing value of key '{item}' to '{value}'!!")
         # Set data
         super(PremiumDict, self).__setitem__(item, value)
+        print(f"self.sentinel: {self.sentinel}")
         # Callback store data
         if hasattr(self, 'name') and hasattr(self, 'path'):
             logger.debug(f"Saving changes to {self.path}.")
             self.store()
 
     def __getitem__(self, item):
-        logger.debug(f"sentinal: {self.sentinal}.")
-        self.sentinal.remove(item)
-        logger.debug(f"sentinal removed item: '{item}' and is now: {self.sentinal}.")
+        logger.debug(f"sentinel: {self.sentinel}.")
+        self.sentinel.remove(item)
+        logger.debug(f"sentinel removed item: '{item}' and is now: {self.sentinel}.")
         value = super(PremiumDict, self).__getitem__(item)
         logger.debug(f"Reading data: '{value}' for key: '{item}'.")
+        print(f"self.sentinel: {self.sentinel}")
         return value
 
     # Takes a list of tuples, like [('some', 'thing')]
     def update(self, iterable):
         logger.debug(f"Updating with '{iterable}'.")
         super(PremiumDict, self).update(iterable)
-        logger.debug(f"Sentinal: {self.sentinal}.")
-        self.sentinal.extend(k for k, v in iterable)
-        logger.debug(f"Sentinal extended: {self.sentinal}.")
+        logger.debug(f"sentinel: {self.sentinel}.")
+        self.sentinel.extend(k for k, v in iterable)
+        logger.debug(f"sentinel extended: {self.sentinel}.")
+        print(f"self.sentinel: {self.sentinel}")
 
     def items(self):
-        self.sentinal = list()
+        self.sentinel = list()
         logger.debug("Get a list of all items.")
         return super(PremiumDict, self).items()
 
     def item_changed(self):
         logger.debug("Retrieve data object change state.")
-        return bool(self.sentinal), self.sentinal
+        return bool(self.sentinel), self.sentinel
 
     def load(self):
         data_dict = {}
