@@ -131,7 +131,7 @@ class PremiumDict(dict):
         logger.debug(f"Updating with '{iterable}'.")
         super(PremiumDict, self).update(iterable)
         logger.debug(f"sentinel: {self.sentinel}.")
-        self.sentinel.extend(k for k, v in iter(iterable))
+        self.sentinel.extend(k for k, v in iterable)
         logger.debug(f"sentinel extended: {self.sentinel}.")
         print(f"update self.sentinel: {self.sentinel}")
 
