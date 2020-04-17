@@ -21,11 +21,13 @@ class TestPremiumDictMethods(unittest.TestCase):
         test_dict = PremiumDict()
         self.assertTrue(test_dict.__class__.__name__ == "PremiumDict")
 
-    def test_update(self):
-        print('--- test_update() ---')
-        test_dict = PremiumDict()
-        test_dict.update([('test', True)])
-        self.assertDictEqual(test_dict, {'test': True})
+    # def test_update(self):
+    #     print('--- test_update() ---')
+    #     test_dict = PremiumDict()
+    #     test_dict.update([('test', True)])
+    #     self.assertDictEqual(test_dict, {'test': True})
+
+
 
     def test_items(self):
         print('--- test_items() ---')
