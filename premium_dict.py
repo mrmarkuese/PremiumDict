@@ -93,7 +93,7 @@ class PremiumDict(dict):
             # Load data from file if exists
             data_dict = self.load()
             # Reformat loaded data for input into update()
-            tuple_list = zip(data_dict.keys(), data_dict.values())
+            tuple_list = list(data_dict.items())
             logger.debug(f"Init with {tuple_list.__repr__()}.")
             # Initialize PremiumDict instance with previous saved data (if they exist)
             self.update(tuple_list)
