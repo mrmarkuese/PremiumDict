@@ -37,18 +37,18 @@ class TestPremiumDictMethods(unittest.TestCase):
 
     def test_items(self):
         print('--- test_items() ---')
-        test_dict = PremiumDict()
-        new_content = {'test': True, 'rest': False}
-        test_dict.update(list(new_content.items()))
-        self.assertEqual(test_dict.items(), {'test': True, 'rest': False}.items())
+        test_dict_1 = PremiumDict()
+        test_dict_2 = {'test': True, 'rest': False}
+        test_dict_1.update(list(test_dict_2.items()))
+        self.assertEqual(test_dict_1.items(), test_dict_2.items())
 
     def test_item_changed(self):
         print('--- test_item_changed() ---')
-        test_dict = PremiumDict()
-        test_dict['test'] = False
-        new_content = {'test': True}
-        test_dict.update(list(new_content.items()))
-        self.assertTrue(test_dict.item_changed())
+        test_dict_1 = PremiumDict()
+        test_dict_1['test'] = False
+        test_dict_2 = {'test': True}
+        test_dict_1.update(list(test_dict_2.items()))
+        self.assertTrue(test_dict_1.item_changed())
 
     def test_set_value(self):
         print('--- test_set_value() ---')
