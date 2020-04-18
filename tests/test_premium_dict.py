@@ -32,7 +32,7 @@ class TestPremiumDictMethods(unittest.TestCase):
         test_dict_1 = PremiumDict()
         test_dict_1['test'] = "what?"
         test_dict_2 = {'test': True}
-        test_dict_1.update([('test', True)])
+        test_dict_1.update(list(test_dict_2.items()))
         self.assertDictEqual(test_dict_1, test_dict_2)
 
     def test_items(self):
