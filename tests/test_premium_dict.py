@@ -7,39 +7,47 @@ from PremiumDict.premium_dict import PremiumDict
 
 
 class TestPremiumDictMethods(unittest.TestCase):
+    ''' A class for testing the PremiumDict methods '''
+
     def test_init(self):
         print('--- test_init() ---')
         test_dict = PremiumDict()
         self.assertIsNotNone(test_dict)
 
-    def test_class_type(self):
+    def test_super_class_type(self):
         print('--- test_class_type() ---')
         self.assertIsInstance(PremiumDict(), dict)
+
+    def test_class_type(self):
+        print('--- test_class_type() ---')
+        self.assertIsInstance(PremiumDict(), PremiumDict)
 
     def test_instance_type(self):
         print('--- test_instance_type() ---')
         test_dict = PremiumDict()
         self.assertTrue(test_dict.__class__.__name__ == "PremiumDict")
 
-    # def test_update(self):
-    #     print('--- test_update() ---')
-    #     test_dict = PremiumDict()
-    #     test_dict.update([('test', True)])
-    #     self.assertDictEqual(test_dict, {'test': True})
-
-
+    def test_update(self):
+        print('--- test_update() ---')
+        test_dict_1 = PremiumDict()
+        test_dict_1['test'] = "what?"
+        test_dict_2 = {'test': True}
+        test_dict_1.update([('test', True)])
+        self.assertDictEqual(test_dict_1, test_dict_2)
 
     def test_items(self):
         print('--- test_items() ---')
         test_dict = PremiumDict()
-        test_dict.update([('test', True), ('pest', False)])
-        self.assertEqual(test_dict.items(), {'test': True, 'pest': False}.items())
+        new_content = {'test': True, 'rest': False}
+        test_dict.update(list(new_content.items()))
+        self.assertEqual(test_dict.items(), {'test': True, 'rest': False}.items())
 
     def test_item_changed(self):
         print('--- test_item_changed() ---')
         test_dict = PremiumDict()
         test_dict['test'] = False
-        test_dict.update([('test', True)])
+        new_content = {'test': True}
+        test_dict.update(list(new_content.items()))
         self.assertTrue(test_dict.item_changed())
 
     def test_set_value(self):
