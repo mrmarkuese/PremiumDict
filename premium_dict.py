@@ -283,7 +283,7 @@ if __name__ == '__main__':
         print(f"--- Running example for '{format.upper()}' ---")
         print("------------------------------------")
 
-        filename = 'user_data.' + format
+        filename = 'app_data.' + format
         premium_dict = PremiumDict(filename)
         print(premium_dict.__class__.__name__, ": ", premium_dict)
 
