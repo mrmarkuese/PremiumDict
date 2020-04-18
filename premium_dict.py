@@ -64,8 +64,7 @@ class PremiumDict(dict):
             allowed = string.ascii_letters + string.digits + '_' + '-'
             not_allowed = set(name) - set(allowed)
             assert len(not_allowed) == 0, f"Error filename: characters {not_allowed} are not allowed"
-            assert name[
-                   :1].isalpha() is True, f"Error filename: first character has to be a letter, but is '{name[:1]}'"
+            assert name[:1].isalpha() is True, f"Error filename: first character has to be a letter, but is '{name[:1]}'"
             self.name = name
 
             if format == "yaml":
