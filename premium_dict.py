@@ -56,12 +56,11 @@ class PremiumDict(dict):
 
         # To initialize a dict with serialization ability a file name is needed
         if filename is not None:
+            # First check whether the file name has correct type
+            assert isinstance(filename, str), "filename has to be a string"
             input = filename.split('.')
             assert len(input) == 2, f"Only one '.' allowed to separate filename and format: {input}"
             (name, format) = input
-            # First check whether the file name has been selected correctly
-            assert isinstance(name, str), "filename has to be a string"
-            assert isinstance(format, str), "format has to be a string"
             allowed = string.ascii_letters + string.digits + '_' + '-'
             not_allowed = set(name) - set(allowed)
             assert len(not_allowed) == 0, f"Error filename: characters {not_allowed} are not allowed"
@@ -283,7 +282,7 @@ if __name__ == '__main__':
         print(f"--- Running example for '{format.upper()}' ---")
         print("------------------------------------")
 
-        filename = 'app_data.' + format
+        filename = 'user_data.' + format
         premium_dict = PremiumDict(filename)
         print(premium_dict.__class__.__name__, ": ", premium_dict)
 
