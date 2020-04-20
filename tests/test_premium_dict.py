@@ -14,15 +14,20 @@ class TestPremiumDictMethods(unittest.TestCase):
         test_dict = PremiumDict()
         self.assertIsNotNone(test_dict)
 
-    def test_super_class_type(self):
+    def test_superclass_type(self):
         print('--- test_class_type() ---')
         self.assertIsInstance(PremiumDict(), dict)
+
+    def test_subclass_type(self):
+        print('--- test_subclass_type() ---')
+        success = issubclass(PremiumDict, dict)
+        self.assertTrue(success)
 
     def test_class_type(self):
         print('--- test_class_type() ---')
         self.assertIsInstance(PremiumDict(), PremiumDict)
 
-    def test_instance_type(self):
+    def test_instance_name(self):
         print('--- test_instance_type() ---')
         test_dict = PremiumDict()
         self.assertTrue(test_dict.__class__.__name__ == "PremiumDict")
