@@ -291,8 +291,8 @@ if __name__ == '__main__':
         print(premium_dict.__class__.__name__, ": ", premium_dict)
 
         # Nested example structure
-        premium_dict['Users'] = {'white_list': {'member_01': {'multiple_IDs': [11, 12, 13]}, 'member_02': 222},
-                                 'black_list': {'nonmember_01': 123, 'nonmember_02': 234}
+        premium_dict['Users'] = {'safelist': {'member_01': {'multiple_IDs': [11, 12, 13]}, 'member_02': 222},
+                                 'blocklist': {'nonmember_01': 123, 'nonmember_02': 234}
                                  }
         # Check if there is a new entry
         print(premium_dict.item_changed())
