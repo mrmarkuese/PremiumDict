@@ -287,6 +287,10 @@ if __name__ == '__main__':
         print("------------------------------------")
 
         filename = 'user_data.' + format
+
+        ## If file exists, delete it ##
+        if os.path.isfile(filename):
+            os.remove(filename)
         premium_dict = PremiumDict(filename)
         print(premium_dict.__class__.__name__, ": ", premium_dict)
 
@@ -307,4 +311,5 @@ if __name__ == '__main__':
 
     # Run tests for every entry in Format
     for format in Format.__members__.keys():
+        print("Format: {}".format(format.lower()))
         test_for_formats(format.lower())
