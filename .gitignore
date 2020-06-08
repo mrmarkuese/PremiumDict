@@ -1,4 +1,5 @@
 .DS_Store
+*.pyc
 *.log*
 *.yaml
 *.pickle
@@ -6,4 +7,3 @@
 *.json
 *.csv
 __pycache__
-
