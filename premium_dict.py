@@ -10,6 +10,8 @@ import csv
 from dicttoxml import dicttoxml
 import xmltodict
 import os
+import stat
+import sys
 from enum import Enum
 from switch import Switch
 import string
@@ -21,14 +23,19 @@ import logging.handlers
 
 # Rotating logger setup
 log_level = logging.DEBUG
-
+#log_dir = 'YOUR_LOG_DIR'
+log_dir = os.path.dirname(os.path.abspath(__file__))
 # Get the fully-qualified logger
 logger = logging.getLogger('premium_dict')
+
+# Important: set perminssions to overwrite log files for all users
+os.chmod(log_dir, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
 log_filename = 'premium.log'
+log_path = log_dir + log_filename
 # Let the log files rotate
 max_keep_files = 2  # Change here the number of rotation files
 max_file_size = 10000  # Change here the max log file size (bytes)
-file_handler = logging.handlers.RotatingFileHandler(log_filename,
+file_handler = logging.handlers.RotatingFileHandler(log_path,
                                                     mode='a',
                                                     maxBytes=max_file_size,
                                                     backupCount=max_keep_files)
