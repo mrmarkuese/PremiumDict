@@ -23,13 +23,14 @@ import logging.handlers
 
 # Rotating logger setup
 log_level = logging.DEBUG
-#log_dir = 'YOUR_LOG_DIR'
-log_dir = os.path.dirname(os.path.abspath(__file__))
+log_dir = '' # Set to 'YOUR_LOG_DIR'
+
 # Get the fully-qualified logger
 logger = logging.getLogger('premium_dict')
 
 # Important: set perminssions to overwrite log files for all users
-os.chmod(log_dir, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
+if log_dir:
+    os.chmod(log_dir, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
 log_filename = 'premium.log'
 log_path = log_dir + log_filename
 # Let the log files rotate
