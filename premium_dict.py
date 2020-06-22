@@ -28,7 +28,7 @@ log_dir = '' # Set to 'YOUR_LOG_DIR'
 # Get the fully-qualified logger
 logger = logging.getLogger('premium_dict')
 
-# Important: set perminssions to overwrite log files for all users
+# Set permissions to overwrite log files
 if log_dir:
     os.chmod(log_dir, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
 log_filename = 'premium.log'
