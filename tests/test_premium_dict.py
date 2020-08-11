@@ -3,7 +3,7 @@
 import unittest
 import sys
 sys.path.insert(0, '../')
-from PremiumDict.premium_dict import PremiumDict
+from premium_dict import PremiumDict
 
 
 class TestPremiumDictMethods(unittest.TestCase):
