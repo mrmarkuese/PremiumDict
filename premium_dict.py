@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # file: premium_dict.py
 # author: mr.markuese
@@ -9,9 +10,7 @@ import pickle
 import csv
 from dicttoxml import dicttoxml
 import xmltodict
-import os
-import stat
-import sys
+import os, sys, stat
 from enum import Enum
 from switch import Switch
 import string
@@ -22,15 +21,13 @@ import logging.handlers
 # https://github.com/quandyfactory/dicttoxml/pull/73/commits/2b7b4522b7255fbc8f1e04304d2e440d333909d5
 
 # Rotating logger setup
-log_level = logging.DEBUG
-log_dir = '' # Set to 'YOUR_LOG_DIR'
+log_level = logging.ERROR
 
 # Get the fully-qualified logger
 logger = logging.getLogger('premium_dict')
-
-# Set permissions to overwrite log files
-if log_dir:
-    os.chmod(log_dir, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
+log_dir = '/home/pi/logs/'
+# Important: set perminssions to overwrite log files for all users
+#os.chmod(log_dir, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
 log_filename = 'premium.log'
 log_path = log_dir + log_filename
 # Let the log files rotate
@@ -295,10 +292,6 @@ if __name__ == '__main__':
         print("------------------------------------")
 
         filename = 'user_data.' + format
-
-        ## If file exists, delete it ##
-        if os.path.isfile(filename):
-            os.remove(filename)
         premium_dict = PremiumDict(filename)
         print(premium_dict.__class__.__name__, ": ", premium_dict)
 
@@ -319,5 +312,4 @@ if __name__ == '__main__':
 
     # Run tests for every entry in Format
     for format in Format.__members__.keys():
-        print("Format: {}".format(format.lower()))
         test_for_formats(format.lower())
