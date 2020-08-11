@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # file: premium_dict.py
 # author: mr.markuese
-# works for python 2.7 and 3.5+
+# works for python 3.7
 
 import yaml
 import json
