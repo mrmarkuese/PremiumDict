@@ -300,14 +300,15 @@ if __name__ == '__main__':
                                  'blocklist': {'nonmember_01': 123, 'nonmember_02': 234}
                                  }
         # Check if there is a new entry
-        print(premium_dict.item_changed())
+        print("premium_dict.item_changed: {}".format(premium_dict.item_changed()))
 
         # Get the entry
         user_lists = premium_dict['Users']
         print("Users: {}".format(dict(zip(user_lists.keys(), user_lists.values()))))
 
         print(premium_dict.items())
-        print(premium_dict.item_changed())
+        # Check if there is a new entry
+        print("premium_dict.item_changed: {}".format(premium_dict.item_changed()))
 
 
     # Run tests for every entry in Format
