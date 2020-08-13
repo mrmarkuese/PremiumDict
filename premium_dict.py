@@ -20,6 +20,7 @@ import logging.handlers
 #       dicttoxml in Python 3.9 that is used in func _store_as_xml(), this may be fixed soon
 # https://github.com/quandyfactory/dicttoxml/pull/73/commits/2b7b4522b7255fbc8f1e04304d2e440d333909d5
 
+sys.path.insert(0, '../')
 # Rotating logger setup
 log_level = logging.ERROR
 
@@ -58,7 +59,7 @@ class Format(Enum):
 
 class PremiumDict(dict):
     ''' A class derived from dict that contains additional features, e. g. Serializing '''
-
+#TODO: sum up filename and path
     def __init__(self, filename=None, path=None):
         super(PremiumDict, self).__init__
         self.sentinel = list()
@@ -171,6 +172,7 @@ class PremiumDict(dict):
     def _load_yaml(self):
         data_dict = {}
         if os.path.exists(self.path):
+            print("self.path: {}".format(self.path))
             # with open(self.path, 'r', newline='') as f:
             with open(self.path, 'r') as f:
                 try:
