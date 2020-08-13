@@ -58,7 +58,6 @@ class Format(Enum):
 
 
 class PremiumDict(dict):
-<<<<<<< HEAD
     ''' A class derived from dict that contains additional features, e. g. Serializing '''
 #TODO: sum up filename and path
     def __init__(self, filename=None, path=None):
