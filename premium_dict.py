@@ -35,9 +35,9 @@ log_path = log_dir + log_filename
 max_keep_files = 2  # Change here the number of rotation files
 max_file_size = 10000  # Change here the max log file size (bytes)
 file_handler = logging.handlers.RotatingFileHandler(log_path,
-                                                    mode='a',
-                                                    maxBytes=max_file_size,
-                                                    backupCount=max_keep_files)
+													mode='a',
+													maxBytes=max_file_size,
+													backupCount=max_keep_files)
 # Choose logging format
 fmt = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 file_handler.setFormatter(fmt)
@@ -48,16 +48,17 @@ root_logger.setLevel(log_level)
 
 
 class Format(Enum):
-    ''' A class derived from Enum that contains the file formats for serialization in PremiumDict '''
+	''' A class derived from Enum that contains the file formats for serialization in PremiumDict '''
 
-    YAML = 0
-    JSON = 1
-    PICKLE = 2
-    XML = 3
-    CSV = 4
+	YAML = 0
+	JSON = 1
+	PICKLE = 2
+	XML = 3
+	CSV = 4
 
 
 class PremiumDict(dict):
+<<<<<<< HEAD
     ''' A class derived from dict that contains additional features, e. g. Serializing '''
 #TODO: sum up filename and path
     def __init__(self, filename=None, path=None):
@@ -288,31 +289,36 @@ class PremiumDict(dict):
 # Try this for several formats
 if __name__ == '__main__':
 
-    def test_for_formats(format):
-        print("------------------------------------")
-        print("--- Running example for '{}' ---".format(format.upper()))
-        print("------------------------------------")
+	def test_for_formats(format):
+		print("------------------------------------")
+		print("--- Running example for '{}' ---".format(format.upper()))
+		print("------------------------------------")
 
-        filename = 'user_data.' + format
-        premium_dict = PremiumDict(filename)
-        print(premium_dict.__class__.__name__, ": ", premium_dict)
+		filename = 'user_data.' + format
+		premium_dict = PremiumDict(filename)
+		print(premium_dict.__class__.__name__, ": ", premium_dict)
 
-        # Nested example structure
-        premium_dict['Users'] = {'safelist': {'member_01': {'multiple_IDs': [11, 12, 13]}, 'member_02': 222},
-                                 'blocklist': {'nonmember_01': 123, 'nonmember_02': 234}
-                                 }
-        # Check if there is a new entry
-        print("premium_dict.item_changed: {}".format(premium_dict.item_changed()))
+		# Nested example structure
+		premium_dict['Users'] = {'safelist': {'member_01': {'multiple_IDs': [11, 12, 13]}, 'member_02': 222},
+								'blocklist': {'nonmember_01': 123, 'nonmember_02': 234}
+								}
+		# Check if there is a new entry
+		print("premium_dict.item_changed: {}".format(premium_dict.item_changed()))
 
-        # Get the entry
-        user_lists = premium_dict['Users']
-        print("Users: {}".format(dict(zip(user_lists.keys(), user_lists.values()))))
+		# Get the entry
+		user_lists = premium_dict['Users']
+		user_lists['blocklist'] = {'blocklist':{'nonmember_01': 123, 'nonmember_02': 234, 'nonmember_03': 567}}
+		premium_dict['Users'] = user_lists
+		# Get the entry
+		user_lists = premium_dict['Users']
 
-        print(premium_dict.items())
-        # Check if there is a new entry
-        print("premium_dict.item_changed: {}".format(premium_dict.item_changed()))
+		print("Users: {}".format(dict(zip(user_lists.keys(), user_lists.values()))))
+
+		print(premium_dict.items())
+		# Check if there is a new entry
+		print("premium_dict.item_changed: {}".format(premium_dict.item_changed()))
 
 
-    # Run tests for every entry in Format
-    for format in Format.__members__.keys():
-        test_for_formats(format.lower())
+	# Run tests for every entry in Format
+	for format in Format.__members__.keys():
+		test_for_formats(format.lower())
