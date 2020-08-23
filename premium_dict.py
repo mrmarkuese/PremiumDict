@@ -27,10 +27,11 @@ log_level = logging.ERROR
 # Get the fully-qualified logger
 logger = logging.getLogger('premium_dict')
 log_dir = '/home/pi/logs/'
-# Important: set perminssions to overwrite log files for all users
-#os.chmod(log_dir, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
 log_filename = 'premium.log'
 log_path = log_dir + log_filename
+# Important: set perminssions to overwrite log files for all users
+#os.chmod(log_path, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
+os.chmod(log_dir, 0o777)
 # Let the log files rotate
 max_keep_files = 2  # Change here the number of rotation files
 max_file_size = 10000  # Change here the max log file size (bytes)
@@ -227,6 +228,14 @@ class PremiumDict(dict):
             logger.info("File '{}' not exists. Return empty dict().".format(self.path))
         return data_dict
 
+    def delete_group(self, key):
+        if key in self:
+            print(f"delete entry with key {key}: {self[key]}")
+            self.pop(key, None)
+            self.store()
+        else:
+            print(f"Error deleting group with key: {key} in {self.name} - reason: key not found")
+
     def store(self):
         with Switch(self.format.name) as case:
             if case('YAML'):
@@ -310,7 +319,8 @@ if __name__ == '__main__':
 		premium_dict['Users'] = user_lists
 		# Get the entry
 		user_lists = premium_dict['Users']
-
+		print("Users: {}".format(dict(zip(user_lists.keys(), user_lists.values()))))
+		premium_dict.delete_group('Users')
 		print("Users: {}".format(dict(zip(user_lists.keys(), user_lists.values()))))
 
 		print(premium_dict.items())
