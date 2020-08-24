@@ -27,10 +27,11 @@ log_level = logging.ERROR
 # Get the fully-qualified logger
 logger = logging.getLogger('premium_dict')
 log_dir = '/home/pi/logs/'
-# Important: set perminssions to overwrite log files for all users
-#os.chmod(log_dir, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
 log_filename = 'premium.log'
 log_path = log_dir + log_filename
+# Important: set perminssions to overwrite log files for all users
+#os.chmod(log_path, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
+os.chmod(log_dir, 0o777)
 # Let the log files rotate
 max_keep_files = 2  # Change here the number of rotation files
 max_file_size = 10000  # Change here the max log file size (bytes)
@@ -173,10 +174,11 @@ class PremiumDict(dict):
         data_dict = {}
         if os.path.exists(self.path):
             print("self.path: {}".format(self.path))
-            # with open(self.path, 'r', newline='') as f:
+            #with open(self.path, 'r', newline='') as f:
             with open(self.path, 'r') as f:
                 try:
-                    data_dict = yaml.load(f, Loader=yaml.Loader)
+                    data_dict = yaml.load(f, Loader=yaml.FullLoader)
+                    #data_dict = yaml.load(f, Loader=yaml.Loader) yaml.FullLoader
                 except yaml.YAMLError as yaml_excp:
                     logger.exception(yaml_excp)
         else:
@@ -226,6 +228,15 @@ class PremiumDict(dict):
         else:
             logger.info("File '{}' not exists. Return empty dict().".format(self.path))
         return data_dict
+
+    def delete_group(self, key_to_delete):
+        # Using dictionary comprehension to find list
+        # keys having value in key_to_delete
+        delete = [key for key in self if key == key_to_delete]
+        # delete the key
+        for key in delete: del self[key]
+        print(self)
+        self.store()
 
     def store(self):
         with Switch(self.format.name) as case:
@@ -310,13 +321,16 @@ if __name__ == '__main__':
 		premium_dict['Users'] = user_lists
 		# Get the entry
 		user_lists = premium_dict['Users']
-
+		print("Users: {}".format(dict(zip(user_lists.keys(), user_lists.values()))))
 		print("Users: {}".format(dict(zip(user_lists.keys(), user_lists.values()))))
 
 		print(premium_dict.items())
 		# Check if there is a new entry
 		print("premium_dict.item_changed: {}".format(premium_dict.item_changed()))
 
+		# Deleting group
+		premium_dict.delete_group('Users')
+		print(f"premium_dict: {premium_dict}")
 
 	# Run tests for every entry in Format
 	for format in Format.__members__.keys():
