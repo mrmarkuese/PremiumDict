@@ -174,10 +174,11 @@ class PremiumDict(dict):
         data_dict = {}
         if os.path.exists(self.path):
             print("self.path: {}".format(self.path))
-            # with open(self.path, 'r', newline='') as f:
+            #with open(self.path, 'r', newline='') as f:
             with open(self.path, 'r') as f:
                 try:
-                    data_dict = yaml.load(f, Loader=yaml.Loader)
+                    data_dict = yaml.load(f, Loader=yaml.FullLoader)
+                    #data_dict = yaml.load(f, Loader=yaml.Loader) yaml.FullLoader
                 except yaml.YAMLError as yaml_excp:
                     logger.exception(yaml_excp)
         else:
@@ -228,13 +229,14 @@ class PremiumDict(dict):
             logger.info("File '{}' not exists. Return empty dict().".format(self.path))
         return data_dict
 
-    def delete_group(self, key):
-        if key in self:
-            print(f"delete entry with key {key}: {self[key]}")
-            self.pop(key, None)
-            self.store()
-        else:
-            print(f"Error deleting group with key: {key} in {self.name} - reason: key not found")
+    def delete_group(self, key_to_delete):
+        # Using dictionary comprehension to find list
+        # keys having value in key_to_delete
+        delete = [key for key in self if key == key_to_delete]
+        # delete the key
+        for key in delete: del self[key]
+        print(self)
+        self.store()
 
     def store(self):
         with Switch(self.format.name) as case:
@@ -320,13 +322,15 @@ if __name__ == '__main__':
 		# Get the entry
 		user_lists = premium_dict['Users']
 		print("Users: {}".format(dict(zip(user_lists.keys(), user_lists.values()))))
-		premium_dict.delete_group('Users')
 		print("Users: {}".format(dict(zip(user_lists.keys(), user_lists.values()))))
 
 		print(premium_dict.items())
 		# Check if there is a new entry
 		print("premium_dict.item_changed: {}".format(premium_dict.item_changed()))
 
+		# Deleting group
+		premium_dict.delete_group('Users')
+		print(f"premium_dict: {premium_dict}")
 
 	# Run tests for every entry in Format
 	for format in Format.__members__.keys():
