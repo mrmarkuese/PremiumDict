@@ -30,8 +30,8 @@ log_dir = '/home/pi/logs/'
 log_filename = 'premium.log'
 log_path = log_dir + log_filename
 # Important: set perminssions to overwrite log files for all users
-#os.chmod(log_path, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
-os.chmod(log_dir, 0o777)
+os.chmod(log_path, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
+#os.chmod(log_dir, 0o777)
 # Let the log files rotate
 max_keep_files = 2  # Change here the number of rotation files
 max_file_size = 10000  # Change here the max log file size (bytes)
