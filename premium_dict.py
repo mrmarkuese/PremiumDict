@@ -27,10 +27,21 @@ log_level = logging.ERROR
 # Get the fully-qualified logger
 logger = logging.getLogger('premium_dict')
 log_dir = '/home/pi/logs/'
+
+# define the access rights
+access_rights = 0o777
+
+try:
+    os.mkdir(log_dir, access_rights)
+except OSError:
+    print ("Creation of the directory %s failed" % log_dir)
+else:
+    print ("Successfully created the directory %s" % log_dir)
+
 log_filename = 'premium.log'
 log_path = log_dir + log_filename
-# Important: set perminssions to overwrite log files for all users
-os.chmod(log_dir, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
+# Set permissions to overwrite log files for all users
+#os.chmod(log_dir, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
 #os.chmod(log_dir, 0o777)
 # Let the log files rotate
 max_keep_files = 2  # Change here the number of rotation files
