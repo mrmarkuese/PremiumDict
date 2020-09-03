@@ -21,44 +21,45 @@ import string
 # https://github.com/quandyfactory/dicttoxml/pull/73/commits/2b7b4522b7255fbc8f1e04304d2e440d333909d5
 
 sys.path.insert(0, '../')
-<<<<<<< HEAD
-# Rotating logger setup
-log_level = logging.ERROR
+# define the access rights for created files
+access_rights = 0o660
 
-# Get the fully-qualified logger
-logger = logging.getLogger('premium_dict')
-log_dir = '/home/pi/logs/'
 
-# define the access rights
-access_rights = 0o777
+# # Rotating logger setup
+# log_level = logging.ERROR
+#
+# # Get the fully-qualified logger
+# logger = logging.getLogger('premium_dict')
+# log_dir = '/home/pi/logs/'
 
-try:
-    os.mkdir(log_dir, access_rights)
-except OSError:
-    print ("Creation of the directory %s failed" % log_dir)
-else:
-    print ("Successfully created the directory %s" % log_dir)
 
-log_filename = 'premium.log'
-log_path = log_dir + log_filename
-# Set permissions to overwrite log files for all users
-#os.chmod(log_dir, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
-#os.chmod(log_dir, 0o777)
-# Let the log files rotate
-max_keep_files = 2  # Change here the number of rotation files
-max_file_size = 10000  # Change here the max log file size (bytes)
-file_handler = logging.handlers.RotatingFileHandler(log_path,
-													mode='a',
-													maxBytes=max_file_size,
-													backupCount=max_keep_files)
-# Choose logging format
-fmt = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-file_handler.setFormatter(fmt)
-# Create root logger and add the custom logger
-root_logger = logging.getLogger()
-root_logger.addHandler(file_handler)
-root_logger.setLevel(log_level)
-=======
+# try:
+#     os.mkdir(log_dir, access_rights)
+# except OSError:
+#     print ("Creation of the directory %s failed" % log_dir)
+# else:
+#     print ("Successfully created the directory %s" % log_dir)
+#
+# log_filename = 'premium.log'
+# log_path = log_dir + log_filename
+# # Set permissions to overwrite log files for all users
+# #os.chmod(log_dir, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
+# #os.chmod(log_dir, 0o777)
+# # Let the log files rotate
+# max_keep_files = 2  # Change here the number of rotation files
+# max_file_size = 10000  # Change here the max log file size (bytes)
+# file_handler = logging.handlers.RotatingFileHandler(log_path,
+# 													mode='a',
+# 													maxBytes=max_file_size,
+#													backupCount=max_keep_files)
+# # Choose logging format
+# fmt = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+# file_handler.setFormatter(fmt)
+# # Create root logger and add the custom logger
+# root_logger = logging.getLogger()
+# root_logger.addHandler(file_handler)
+# root_logger.setLevel(log_level)
+
 ## Rotating logger setup
 #log_level = logging.ERROR
 #
@@ -84,7 +85,7 @@ root_logger.setLevel(log_level)
 # root_logger = logging.getLogger()
 # root_logger.addHandler(file_handler)
 # root_logger.setLevel(log_level)
->>>>>>> working
+
 
 
 class Format(Enum):
@@ -303,7 +304,7 @@ class PremiumDict(dict):
             if case.default:
                 print("File '{}' not exists. Return empty dict().".format(self.path))
                 # logger.info("File '{}' not exists. Return empty dict().".format(self.path))
-        os.chmod(self.path, 0o660)
+        os.chmod(self.path, access_rights)
         # logger.debug("Stored {} in {} format at {}".format(dict(zip(self.keys(), self.values())), self.format.name, self.path))
 
     def _store_as_yaml(self):
