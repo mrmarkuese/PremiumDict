@@ -264,6 +264,7 @@ class PremiumDict(dict):
             if case.default:
                 print("File '{}' not exists. Return empty dict().".format(self.path))
                 # logger.info("File '{}' not exists. Return empty dict().".format(self.path))
+        os.chmod(self.path, 0o660)
         # logger.debug("Stored {} in {} format at {}".format(dict(zip(self.keys(), self.values())), self.format.name, self.path))
 
     def _store_as_yaml(self):
