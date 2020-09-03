@@ -14,13 +14,14 @@ import os, sys, stat
 from enum import Enum
 from switch import Switch
 import string
-import logging.handlers
+#import logging.handlers
 
 # TODO: Since Iterable has moved from collections to collections.abc, there is a deprecation warning in
 #       dicttoxml in Python 3.9 that is used in func _store_as_xml(), this may be fixed soon
 # https://github.com/quandyfactory/dicttoxml/pull/73/commits/2b7b4522b7255fbc8f1e04304d2e440d333909d5
 
 sys.path.insert(0, '../')
+<<<<<<< HEAD
 # Rotating logger setup
 log_level = logging.ERROR
 
@@ -57,6 +58,33 @@ file_handler.setFormatter(fmt)
 root_logger = logging.getLogger()
 root_logger.addHandler(file_handler)
 root_logger.setLevel(log_level)
+=======
+## Rotating logger setup
+#log_level = logging.ERROR
+#
+# # Get the fully-qualified logger
+# logger = logging.getLogger('premium_dict')
+# log_dir = '/home/pi/logs/'
+# log_filename = 'premium.log'
+# log_path = log_dir + log_filename
+# # Important: set perminssions to overwrite log files for all users
+# #os.chmod(log_path, stat.S_IRWXG | stat.S_IRWXU | stat.S_IRWXO)
+#
+# # Let the log files rotate
+# max_keep_files = 2  # Change here the number of rotation files
+# max_file_size = 10000  # Change here the max log file size (bytes)
+# file_handler = logging.handlers.RotatingFileHandler(log_path,
+# 													mode='a',
+# 													maxBytes=max_file_size,
+# 													backupCount=max_keep_files)
+# # Choose logging format
+# fmt = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+# file_handler.setFormatter(fmt)
+# # Create root logger and add the custom logger
+# root_logger = logging.getLogger()
+# root_logger.addHandler(file_handler)
+# root_logger.setLevel(log_level)
+>>>>>>> working
 
 
 class Format(Enum):
@@ -101,7 +129,7 @@ class PremiumDict(dict):
                 self.format = Format.CSV
             else:
                 self.format = Format.YAML
-                logger.error("Unsupported file format '{}' given, choose '{}' for now".format(format, self.format.name))
+                # logger.error("Unsupported file format '{}' given, choose '{}' for now".format(format, self.format.name))
             # Set file path for storing dict
             if path == None:
                 # Get path from working dir
@@ -109,14 +137,15 @@ class PremiumDict(dict):
             else:
                 # Or take path from parameter
                 self.path = path
-            logger.debug("File path: {}.".format(self.path))
+            # logger.debug("File path: {}.".format(self.path))
             # Load data from file if exists
             data_dict = self.load()
             # Reformat loaded data for input into update()
-            tuple_list = list(data_dict.items())
-            logger.debug("Init with {}.".format(tuple_list.__repr__()))
-            # Initialize PremiumDict instance with previous saved data (if they exist)
-            self.update(tuple_list)
+            if data_dict is not None:
+	            tuple_list = list(data_dict.items())
+	            # logger.debug("Init with {}.".format(tuple_list.__repr__()))
+	            # Initialize PremiumDict instance with previous saved data (if they exist)
+	            self.update(tuple_list)
 
     def get_filepath(self):
         dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -124,44 +153,45 @@ class PremiumDict(dict):
         return file_path
 
     def __setitem__(self, item, value):
-        assert isinstance(self, PremiumDict), logger.exception("Wrong object type - not an instance of PremiumDict")
-        logger.debug("sentinel: {}.".format(self.sentinel))
+        #assert isinstance(self, PremiumDict), logger.exception("Wrong object type - not an instance of PremiumDict")
+        assert isinstance(self, PremiumDict), print("Wrong object type - not an instance of PremiumDict")
+        # logger.debug("sentinel: {}.".format(self.sentinel))
         self.sentinel.append(item)
-        logger.debug("sentinel appended item: '{}' and is now: {}.".format(item, self.sentinel))
-        logger.debug("Changing value of key '{}' to '{}'!!".format(item, value))
+        # logger.debug("sentinel appended item: '{}' and is now: {}.".format(item, self.sentinel))
+        # logger.debug("Changing value of key '{}' to '{}'!!".format(item, value))
         # Set data
         super(PremiumDict, self).__setitem__(item, value)
         print("__setitem__ self.sentinel: {}".format(self.sentinel))
         # Callback store data
         if hasattr(self, 'name') and hasattr(self, 'path'):
-            logger.debug("Saving changes to {}.".format(self.path))
+            # logger.debug("Saving changes to {}.".format(self.path))
             self.store()
 
     def __getitem__(self, item):
-        logger.debug("sentinel: {}.".format(self.sentinel))
+        # logger.debug("sentinel: {}.".format(self.sentinel))
         self.sentinel.remove(item)
-        logger.debug("sentinel removed item: '{}' and is now: {}.".format(item, self.sentinel))
+        # logger.debug("sentinel removed item: '{}' and is now: {}.".format(item, self.sentinel))
         value = super(PremiumDict, self).__getitem__(item)
-        logger.debug("Reading data: '{}' for key: '{}'.".format(value, item))
+        # logger.debug("Reading data: '{}' for key: '{}'.".format(value, item))
         print("__getitem__ self.sentinel: {}".format(self.sentinel))
         return value
 
     # Takes a list of tuples, like [('some', 'thing')]
     def update(self, iterable):
-        logger.debug("Updating with '{}'.".format(iterable))
+        # logger.debug("Updating with '{}'.".format(iterable))
         super(PremiumDict, self).update(iterable)
-        logger.debug("sentinel: {}.".format(self.sentinel))
+        # logger.debug("sentinel: {}.".format(self.sentinel))
         self.sentinel.extend(k for k, v in iterable)
-        logger.debug("sentinel extended: {}.".format(self.sentinel))
+        # logger.debug("sentinel extended: {}.".format(self.sentinel))
         print("update self.sentinel: {}".format(self.sentinel))
 
     def items(self):
         self.sentinel = list()
-        logger.debug("Get a list of all items.")
+        # logger.debug("Get a list of all items.")
         return super(PremiumDict, self).items()
 
     def item_changed(self):
-        logger.debug("Retrieve data object change state.")
+        # logger.debug("Retrieve data object change state.")
         return bool(self.sentinel), self.sentinel
 
     def load(self):
@@ -178,31 +208,35 @@ class PremiumDict(dict):
             if case('CSV'):
                 data_dict = self._load_csv()
             if case.default:
-                logger.error("Error, unknown file format: {}.".format(self.format.name))
+                print("Error, unknown file format: {}.".format(self.format.name))
+                # logger.error("Error, unknown file format: {}.".format(self.format.name))
         return data_dict
 
     def _load_yaml(self):
         data_dict = {}
         if os.path.exists(self.path):
             print("self.path: {}".format(self.path))
-            #with open(self.path, 'r', newline='') as f:
+            #with open(self.path, 'r+', newline='') as f:
             with open(self.path, 'r') as f:
                 try:
                     data_dict = yaml.load(f, Loader=yaml.FullLoader)
                     #data_dict = yaml.load(f, Loader=yaml.Loader) yaml.FullLoader
                 except yaml.YAMLError as yaml_excp:
-                    logger.exception(yaml_excp)
+                    print(yaml_excp)
+                    # logger.exception(yaml_excp)
         else:
-            logger.info("File '{}' not exists. Return empty dict().".format(self.path))
+            print("File '{}' not exists. Return empty dict().".format(self.path))
+            # logger.info("File '{}' not exists. Return empty dict().".format(self.path))
         return data_dict
 
     def _load_json(self):
         data_dict = {}
         if os.path.exists(self.path):
-            with open(self.path, 'r') as f:
+            with open(self.path, 'r+') as f:
                 data_dict = json.load(f)
         else:
-            logger.info("File '{}' not exists. Return empty dict().".format(self.path))
+            print("File '{}' not exists. Return empty dict().".format(self.path))
+            # logger.info("File '{}' not exists. Return empty dict().".format(self.path))
         return data_dict
 
     def _load_pickle(self):
@@ -212,32 +246,37 @@ class PremiumDict(dict):
                 with open(self.path, 'rb') as f:
                     data_dict = pickle.load(f)
             except pickle.UnpicklingError as pickle_excp:
-                logger.exception(pickle_excp)
+                print(pickle_excp)
+                # logger.exception(pickle_excp)
         else:
-            logger.info("File '{}' not exists. Return empty dict().".format(self.path))
+            print("File '{}' not exists. Return empty dict().".format(self.path))
+            # logger.info("File '{}' not exists. Return empty dict().".format(self.path))
         return data_dict
 
     def _load_xml(self):
         data_dict = {}
         if os.path.exists(self.path):
-            with open(self.path, 'r') as f:
+            with open(self.path, 'r+') as f:
                 root = xmltodict.parse(f.read(), dict_constructor=dict)
                 data_dict = root['root']
         else:
-            logger.info("File '{}' not exists. Return empty dict().".format(self.path))
+            print("File '{}' not exists. Return empty dict().".format(self.path))
+            # logger.info("File '{}' not exists. Return empty dict().".format(self.path))
         return data_dict
 
     def _load_csv(self):
         data_dict = {}
         if os.path.exists(self.path):
             try:
-                with open(self.path, 'r') as f:
+                with open(self.path, 'r+') as f:
                     reader = csv.reader(f)
                     data_dict = dict(reader)
             except csv.Error as e:
-                logger.exception(e)
+                print(e)
+                # logger.exception(e)
         else:
-            logger.info("File '{}' not exists. Return empty dict().".format(self.path))
+            print("File '{}' not exists. Return empty dict().".format(self.path))
+            # logger.info("File '{}' not exists. Return empty dict().".format(self.path))
         return data_dict
 
     def delete_group(self, key_to_delete):
@@ -262,22 +301,26 @@ class PremiumDict(dict):
             if case('CSV'):
                 self._store_as_csv()
             if case.default:
-                logger.info("File '{}' not exists. Return empty dict().".format(self.path))
-        logger.debug("Stored {} in {} format at {}".format(dict(zip(self.keys(), self.values())), self.format.name, self.path))
+                print("File '{}' not exists. Return empty dict().".format(self.path))
+                # logger.info("File '{}' not exists. Return empty dict().".format(self.path))
+        os.chmod(self.path, 0o660)
+        # logger.debug("Stored {} in {} format at {}".format(dict(zip(self.keys(), self.values())), self.format.name, self.path))
 
     def _store_as_yaml(self):
         try:
             with open(self.path, 'w') as f:
                 yaml.dump(dict(zip(self.keys(), self.values())), f)
         except Exception as e:
-            logger.exception("Error writing the {} file: {}".format(self.format.name, e))
+            print("Error writing the {} file: {}".format(self.format.name, e))
+            # logger.exception("Error writing the {} file: {}".format(self.format.name, e))
 
     def _store_as_json(self):
         try:
             with open(self.path, 'w') as f:
                 json.dump(dict(zip(self.keys(), self.values())), f, sort_keys=True)
         except Exception as e:
-            logger.exception("Error writing the {} file: {}".format(self.format.name, e))
+            print("Error writing the {} file: {}".format(self.format.name, e))
+            # logger.exception("Error writing the {} file: {}".format(self.format.name, e))
 
     def _store_as_pickle(self):
         try:
@@ -285,9 +328,11 @@ class PremiumDict(dict):
                 try:
                     pickle.dump(dict(zip(self.keys(), self.values())), f)
                 except pickle.PicklingError as pickle_excp:
-                    logger.exception(pickle_excp)
+                    print(pickle_excp)
+                    # logger.exception(pickle_excp)
         except Exception as e:
-            logger.exception("Error writing the {} file: {}".format(self.format.name, e))
+            print("Error writing the {} file: {}".format(self.format.name, e))
+            # logger.exception("Error writing the {} file: {}".format(self.format.name, e))
 
     def _store_as_xml(self):
         try:
@@ -295,7 +340,8 @@ class PremiumDict(dict):
             with open(self.path, 'w+') as f:
                 f.write(xml.decode('utf-8'))
         except Exception as e:
-            logger.exception("Error writing the {} file: {}".format(self.format.name, e))
+            print("Error writing the {} file: {}".format(self.format.name, e))
+            # logger.exception("Error writing the {} file: {}".format(self.format.name, e))
 
     def _store_as_csv(self):
         try:
@@ -304,7 +350,8 @@ class PremiumDict(dict):
                 for key, value in zip(self.keys(), self.values()):
                     writer.writerow([key, value])
         except Exception as e:
-            logger.exception("Error writing the {} file: {}".format(self.format.name, e))
+            print("Error writing the {} file: {}".format(self.format.name, e))
+            # logger.exception("Error writing the {} file: {}".format(self.format.name, e))
 
 
 # Try this for several formats
@@ -340,8 +387,8 @@ if __name__ == '__main__':
 		print("premium_dict.item_changed: {}".format(premium_dict.item_changed()))
 
 		# Deleting group
-		premium_dict.delete_group('Users')
-		print(f"premium_dict: {premium_dict}")
+		#premium_dict.delete_group('Users')
+		#print(f"premium_dict: {premium_dict}")
 
 	# Run tests for every entry in Format
 	for format in Format.__members__.keys():
