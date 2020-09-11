@@ -285,8 +285,9 @@ class PremiumDict(dict):
         # keys having value in key_to_delete
         delete = [key for key in self if key == key_to_delete]
         # delete the key
-        for key in delete: del self[key]
-        print(self)
+        for key in delete:
+            print(f"group to delete: {key}: {self[key]}")
+            del self[key]
         self.store()
 
     def store(self):
